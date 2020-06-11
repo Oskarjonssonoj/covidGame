@@ -1,5 +1,5 @@
 #app {
-	background-color: darkslategray;
+	background-color: black;
 	height: 100vh;
 	width: 100vw;
 }
@@ -16,6 +16,22 @@
 
 #startGame {
 	background-color: orange;
+}
+
+#startMatch {
+	display: flex;
+	justify-content: center;
+	margin-top: 350px;
+}
+
+#reactionTime {
+	color: white;
+	font-weight: bold;
+}
+
+img {
+	width: 25px;
+	height: 25px;
 }
 
 #username-form {
@@ -44,23 +60,28 @@
 	flex-grow: 1;
 }
 
-#users {
+#player-info {
 	flex-basis: 20%;
 }
 
-#users h2 {
+#player-info h2 {
 	background-color: orange;
 	padding: 0.5rem 0.75rem;
 	color: white;
 }
 
-#users ul {
+#player-info ul {
 	margin: 0;
 	padding: 0.5rem 0.75rem;
 	list-style: none;
 	color: white;
 	font-weight: bold;
 }
+
+#player-names {
+	height: 200px;
+}
+
 
 #message-wrapper {
 	flex-grow: 1;
@@ -75,7 +96,6 @@
 }
 
 #gameboard {
-	background-color: #555;
 	height: 100%;
 	width: 100%;
    }

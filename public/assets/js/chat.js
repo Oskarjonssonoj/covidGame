@@ -4,30 +4,19 @@ const startEl = document.querySelector('#start');
 const chatWrapperEl = document.querySelector('#chat-wrapper');
 const usernameForm = document.querySelector('#username-form');
 const messageForm = document.querySelector('#message-form');
-const messageWrapper = document.querySelector('#gameboard');
+const gameBoard = document.querySelector('#gameboard');
+const startMatch = document.querySelector('#startMatch')
 
 
-const img = document.createElement('img');
-
-function getRandomPosition(element) {
+const getRandomPosition = (element) => {
 	var x = document.querySelector("#gameboard").offsetHeight-element.clientHeight;
 	var y = document.querySelector("#gameboard").offsetWidth-element.clientWidth;
 	var randomX = Math.floor(Math.random()* x);
 	var randomY = Math.floor(Math.random()* y);
 	return [randomX,randomY];
 }
-window.onload = function (){ 
-	var img = document.createElement('img');
-	img.setAttribute("style", "position:absolute;");
-	img.setAttribute("src", "../assets/images/virus.png");
-	document.querySelector("#gameboard").appendChild(img);
-	var xy = getRandomPosition(img);
-	img.style.top = xy[10] + 'px';
-	img.style.left = xy[11] + 'px';
-};
 
-
-function addvirus(){ 
+const addvirus = () => { 
 	var img = document.createElement('img');
 	img.setAttribute("style", "position:absolute;");
 	img.setAttribute("src", "../assets/images/virus.png");
@@ -36,16 +25,35 @@ function addvirus(){
 	img.style.top = xy[0] + 'px';
 	img.style.left = xy[1] + 'px';
 };
-messageWrapper.addEventListener('click', e => { 
 
+let startClick; 
+let stopClick; 
+let reactionTime;
+
+startMatch.addEventListener('click', e =>{
+	e.target.remove()
+	setTimeout(function() {
+		addvirus();
+		stopClick=Date.now();
+	}, 1500);
+})
+
+gameBoard.addEventListener('click', e => { 
 	gameImg = document.querySelector("img")
 	console.log(e.target);
 
-	if(e.target !== gameImg){
+	if (e.target !== gameImg) {
 		console.log("NOT A VIRUS")
-	}else{
+	} else {
 		e.target.remove();
+		startClick=Date.now();
+		reactionTime=(startClick-stopClick)/1000;
+		document.getElementById("reactionTime").innerHTML += `<li>${reactionTime} seconds</li>`
+
+		setTimeout(function() {
 		addvirus();
+		createdTime=Date.now();
+		}, Math.floor(Math.random() * 5000) + 3000);
 	}
 });
 
@@ -112,7 +120,6 @@ messageForm.addEventListener('submit', e => {
 socket.on('reconnect', () => {
 	if (username) {
 		socket.emit('register-user', username, () => {
-			console.log("The server acknowledged our reconnect.");
 		});
 	}
 });
@@ -122,11 +129,11 @@ socket.on('online-users', (users) => {
 });
 
 socket.on('new-user-connected', (username) => {
-	addNoticeToChat(`${username} connected to the chat 🥳!`);
+	addNoticeToChat(`${username} joined the game`);
 });
 
 socket.on('user-disconnected', (username) => {
-	addNoticeToChat(`${username} left the chat 😢...`);
+	addNoticeToChat(`${username} left the game`);
 });
 
 socket.on('chatmsg', (msg) => {
