@@ -8,6 +8,27 @@ const gameBoard = document.querySelector('#gameboard');
 const startMatch = document.querySelector('#startMatch')
 
 
+// get username from form and emit `register-user`-event to server
+usernameForm.addEventListener('submit', e => {
+	e.preventDefault();
+
+	username = document.querySelector('#username').value;
+	socket.emit('register-user', username, (status) => {
+		console.log("Server acknowledged the registration :D", status);
+
+		if (status.joinChat) {
+			startEl.classList.add('hide');
+			chatWrapperEl.classList.remove('hide');
+
+			updateOnlineUsers(status.onlineUsers);
+		}
+	});
+});
+
+socket.on('online-users', (users) => {
+	updateOnlineUsers(users);
+});
+
 const getRandomPosition = (element) => {
 	var x = document.querySelector("#gameboard").offsetHeight-element.clientHeight;
 	var y = document.querySelector("#gameboard").offsetWidth-element.clientWidth;
@@ -29,6 +50,7 @@ const addvirus = () => {
 let startClick; 
 let stopClick; 
 let reactionTime;
+let score = 1;
 
 startMatch.addEventListener('click', e =>{
 	e.target.remove()
@@ -48,11 +70,13 @@ gameBoard.addEventListener('click', e => {
 		e.target.remove();
 		startClick=Date.now();
 		reactionTime=(startClick-stopClick)/1000;
+		addScore = score ++;
 		document.getElementById("reactionTime").innerHTML += `<li>${reactionTime} seconds</li>`
+		document.getElementById("scores").innerHTML = `<li id="yourScore">${addScore}</li>`
 
 		setTimeout(function() {
 		addvirus();
-		createdTime=Date.now();
+		stopClick=Date.now();
 		}, Math.floor(Math.random() * 5000) + 3000);
 	}
 });
@@ -84,24 +108,6 @@ const updateOnlineUsers = (users, i) => {
 	document.querySelector('#online-users').innerHTML = users.map(user => `<li class="user">Player: ${user}</li>`).join("");
 }
 
-// get username from form and emit `register-user`-event to server
-usernameForm.addEventListener('submit', e => {
-	e.preventDefault();
-
-	username = document.querySelector('#username').value;
-	socket.emit('register-user', username, (status) => {
-		console.log("Server acknowledged the registration :D", status);
-
-		if (status.joinChat) {
-			startEl.classList.add('hide');
-			chatWrapperEl.classList.remove('hide');
-
-			updateOnlineUsers(status.onlineUsers);
-		}
-	});
-
-});
-
 messageForm.addEventListener('submit', e => {
 	e.preventDefault();
 
@@ -120,20 +126,17 @@ messageForm.addEventListener('submit', e => {
 socket.on('reconnect', () => {
 	if (username) {
 		socket.emit('register-user', username, () => {
+			console.log("The server acknowledged our reconnect.");
 		});
 	}
 });
 
-socket.on('online-users', (users) => {
-	updateOnlineUsers(users);
-});
-
 socket.on('new-user-connected', (username) => {
-	addNoticeToChat(`${username} joined the game`);
+	addNoticeToChat(`${username} connected to the chat 🥳!`);
 });
 
 socket.on('user-disconnected', (username) => {
-	addNoticeToChat(`${username} left the game`);
+	addNoticeToChat(`${username} left the chat 😢...`);
 });
 
 socket.on('chatmsg', (msg) => {

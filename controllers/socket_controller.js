@@ -16,7 +16,7 @@ function getOnlineUsers() {
  * Handle user disconnecting
  */
 function handleUserDisconnect() {
-	debug(`Socket ${this.id} left the chat :(`);
+	debug(`Player ${this.id} left the game :(`);
 
 	// broadcast to all connected sockets that this user has left the chat
 	if (users[this.id]) {
@@ -35,14 +35,14 @@ function handleChatMsg (msg) {
 	//io.emit('chatmsg', msg); // emit to all connected sockets
 
 	// broadcast to all connected sockets EXCEPT ourselves
-	this.broadcast.emit('chatmsg', msg);
+	this.broadcast.emit('start', msg);
 }
 
 /**
  * Handle a new user connecting
  */
 function handleRegisterUser(username, callback) {
-	debug("User '%s' connected to the chat", username);
+	debug("Player '%s' connected to the game", username);
 	users[this.id] = username;
 	callback({
 		joinChat: true,
@@ -59,7 +59,7 @@ function handleRegisterUser(username, callback) {
 
 module.exports = function(socket) {
 	// this = io
-	debug(`Client ${socket.id} connected!`);
+	debug(`Player ${socket.id} connected!`);
 
 	socket.on('disconnect', handleUserDisconnect);
 

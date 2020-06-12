@@ -65,6 +65,7 @@ img {
 }
 
 #player-info h2 {
+	text-align: center;
 	background-color: orange;
 	padding: 0.5rem 0.75rem;
 	color: white;
@@ -80,6 +81,15 @@ img {
 
 #player-names {
 	height: 200px;
+}
+
+#scores {
+	height: 80px;
+}
+
+#yourScore {
+	font-size: 2rem;
+	text-align: center;
 }
 
 
