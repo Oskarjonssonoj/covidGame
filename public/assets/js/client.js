@@ -1,14 +1,15 @@
 const socket = io();
 
+// QUERY SELECTOR VARIABLES
 const startPage = document.querySelector('#startPage');
 const playerNickname = document.querySelector('#playerNickname-form');
 const lobbyRoom = document.querySelector('#waitForConnect');
 const playingField = document.querySelector('#playingField');
 const gameBoard = document.querySelector('#gameBoard');
 const virus = document.getElementById('virus');
-
 const timer = document.querySelector('#countdown')
 
+// GENERAL VARIABLES
 let nickname = null;
 let playersLob = []
 let playerScoreOne = {
@@ -24,23 +25,26 @@ let score = 1;
 
 
 // GENERAL FUNCTIONS
-
 const gameOver = () => {
     gameBoard.classList.add('hide');
-    document.getElementById("countdown").classList.add('hide')
+    document.querySelector("#countdown").classList.add('hide')
     playingField.innerHTML = `
     <div>
         <h2>Game Over</h2>
         <h3>Result:</h3>
         <p>${playersLob[0]}: ${playerScoreOne.score}</p>
         <p>${playersLob[1]}: ${playerScoreTwo.score}</p>
+        <button type="click" class="btn" id="restartButton">Restart Game</button>
     </div>
     `
-
 }
+
 const lobby = () => {
     lobbyRoom.classList.add('hide');
     playingField.classList.remove('hide');
+    document.querySelector("#playerOneName").innerText = playersLob[0];
+    document.querySelector("#playerTwoName").innerText = playersLob[1];
+
     connectedPlayersReady();
 }
 
@@ -48,7 +52,7 @@ const updatePlayersOnline = (players) => {
     console.log(players)
     playersLob = players;
     console.log('playersLob', playersLob)
-	document.querySelector('#players-online').innerHTML = players.map(player => `<li class="player">${player}</li>`).join("");
+	document.querySelector('#players-online').innerHTML = players.map(player => `<li class="player"><span class="fas fa-user"></span>${player}</li>`).join("");
 }
 
 const scoreBoard = (gameData) => {
@@ -56,39 +60,38 @@ const scoreBoard = (gameData) => {
         playerScoreOne.score ++;
         console.log("playerScoreOne", playerScoreOne)
 
-        const playerOneScore = document.querySelector('#playerOne');
-        playerOneScore.innerHTML = 
+        const playerOneInfo = document.querySelector('#playerOneInfo');
+        playerOneInfo.innerHTML = 
         `<div>
-            <h3>Player One</h3>
             <p>Score: ${gameData.score}</p>
             <p>Reactiontime: ${gameData.reaction}</p>
         </div>`
     } else if (gameData.nickname === playersLob[1]){
         playerScoreTwo.score ++;
         console.log("playerScoreTwo", playerScoreTwo)
-        const playerTwoScore = document.querySelector('#playerTwo');
-        playerTwoScore.innerHTML = 
-        `<div>
-            <h3>Player Two</h3>
+        const playerTwoInfo = document.querySelector('#playerTwoInfo');
+        playerTwoInfo.innerHTML = 
+        `
             <p>Score: ${gameData.score}</p>
             <p>Reactiontime: ${gameData.reaction}</p>
-        </div>`
+        `
     }
 }
 
 const connectedPlayersReady = () => {
-    let timeleft = 10;
-    const downloadTimer = setInterval(function(){
+    let timeleft = 3;
+    const tickingTimer = setInterval(function(){
       if(timeleft <= 0){
-        clearInterval(downloadTimer);
+        clearInterval(tickingTimer);
         startTime = Date.now();
+        randomVirusPosition()
         virus.classList.remove('hide');
         document.getElementById("countdown").classList.add('hide');
       } else {
-        document.getElementById("countdown").innerHTML = `Get ready! ${timeleft} seconds until match starts`;
+        document.getElementById("countdown").innerHTML = ` ${timeleft}`;
       }
       timeleft -= 1;
-    }, 1000);
+    }, 1500);
     }
 
 const randomVirusPosition = (target) => {
@@ -103,15 +106,10 @@ const randomVirusPosition = (target) => {
 
 const clickedVirus = (e) => {
     if(e.target.tagName === 'IMG' ){
-        const score = document.querySelector('#sek')
- 
         //stop the timer
         endTime = Date.now()
         //reaction time
         reactionTime = (endTime - startTime)/1000;
- 
-        // set reaction time on webpage
-        // score.innerHTML = `<div><h4>${reactionTime} sek</h4></div>`
     }
 }
 
@@ -149,7 +147,6 @@ playerNickname.addEventListener('submit', e => {
 	});
 
 });
-
 
 
 // SOCKET FUNCTIONS
