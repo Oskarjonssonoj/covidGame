@@ -2,7 +2,7 @@
  * Socket Controller
  */
 
-const debug = require('debug')('game:socket_controller');
+const debug = require('debug')('covidGame:socket_controller');
 
 let io = null;
 const users = {};
