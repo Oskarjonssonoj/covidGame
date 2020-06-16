@@ -1,97 +1,83 @@
-#app {
-	background-color: black;
-	height: 100vh;
-	width: 100vw;
-}
-
-.hide {
-	display: none !important;
-}
-
-#start {
-	display: flex;
-	height: 100vh;
-	align-items: center;
-}
-
-#startGame {
-	background-color: orange;
-}
-
-#startMatch {
-	display: flex;
-	justify-content: center;
-	margin-top: 350px;
-}
-
-#reactionTime {
-	color: white;
-	font-weight: bold;
-}
-
 img {
 	width: 25px;
 	height: 25px;
 }
 
-#username-form {
-	margin: 0 auto;
+.hide {
+    display: none !important;
+}
+
+#app {
+	background-color: rgb(0, 0, 0);
+	height: 100vh;
+	width: 100vw;
+}
+
+#startPage {
+	display: flex;
+	height: 100vh;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#playerNickname-form {
+	margin-top: 1.5rem;
 	text-align: center;
 }
 
-#chat-wrapper {
+#playingField {
+	height: 100vh;
 	display: flex;
+	justify-content: space-between;
+}
+
+
+#gameBoard {
+	margin-left: 3rem;
+	margin-right: 3rem;
+	margin-top: 3rem;
+	width: 80%;
+}
+
+#play {
+	background-color: #009200;
+	height: 550px;
+	width: 780px;
+	position: relative;
+	margin: auto;
+}
+
+#virus {
+	width: 9%;
+	position: absolute;
+	top: 200px;
+	left: 200px;
+}
+
+#players {
+	flex-basis: 20%;
+	border: 1px solid black;
+}
+
+#players h2 {
+	background-color: cornflowerblue;
+	padding: 0.5rem 0.75rem;
+	color: white;
+}
+
+#waitForConnect {
+	display:flex;
+	justify-content: center;
+	align-items: center;
 	height: 100vh;
 }
 
-#chat {
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
-	border-right: 1px solid #555;
-}
-
-#chat .form-group {
-	flex-grow: 1;
-	display: flex;
-}
-
-#chat .form-group #message {
-	flex-grow: 1;
-}
-
-#player-info {
-	flex-basis: 20%;
-}
-
-#player-info h2 {
-	text-align: center;
-	background-color: orange;
-	padding: 0.5rem 0.75rem;
-	color: white;
-}
-
-#player-info ul {
+#players ul {
 	margin: 0;
 	padding: 0.5rem 0.75rem;
 	list-style: none;
-	color: white;
-	font-weight: bold;
 }
-
-#player-names {
-	height: 200px;
-}
-
-#scores {
-	height: 80px;
-}
-
-#yourScore {
-	font-size: 2rem;
-	text-align: center;
-}
-
 
 #message-wrapper {
 	flex-grow: 1;
@@ -104,8 +90,3 @@ img {
 #messages .notice {
 	font-style: italic;
 }
-
-#gameboard {
-	height: 100%;
-	width: 100%;
-   }
