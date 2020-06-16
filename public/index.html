@@ -18,18 +18,20 @@
 				<div class="form-group">
 					<input type="text" id="nickname" class="form-control form-control-lg" required placeholder="Nickname..">
 				</div>
-				<button type="submit" class="btn btn-success">Join Lobby</button>
+				<button type="submit" class="btn">Join Lobby</button>
 			</form>
 		</div>
 
     <div id="waitForConnect" class="hide">
+		<img src="./assets/images/loading.gif" alt="load" class="load">
         <p>Waiting for a player to start the game</p>
     </div>
 
 		<div id="playingField" class="hide">
 			<div id="gameBoard">
 				<div id="play">
-					<img id="virus" src="./assets/images/virus.png" alt="Virus">
+					<div id="countdown"></div>
+					<img id="virus" src="./assets/images/virus-2.png" alt="Virus" class="hide">
 				</div>						
 			</div>
 
@@ -46,7 +48,6 @@
 					<p>Score: 0</p>
 					<p>Reactiontime:</p>
 				</div>
-				<div id="countdown"></div>
 			</div>
 		</div>
 	</div>

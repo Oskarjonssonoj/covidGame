@@ -26,7 +26,8 @@ let score = 1;
 // GENERAL FUNCTIONS
 
 const gameOver = () => {
-    gameBoard.classList.add('hide')
+    gameBoard.classList.add('hide');
+    document.getElementById("countdown").classList.add('hide')
     playingField.innerHTML = `
     <div>
         <h2>Game Over</h2>
@@ -40,6 +41,7 @@ const gameOver = () => {
 const lobby = () => {
     lobbyRoom.classList.add('hide');
     playingField.classList.remove('hide');
+    connectedPlayersReady();
 }
 
 const updatePlayersOnline = (players) => {
@@ -74,17 +76,20 @@ const scoreBoard = (gameData) => {
     }
 }
 
-var timeleft = 10;
-var downloadTimer = setInterval(function(){
-  if(timeleft <= 0){
-    clearInterval(downloadTimer);
-    startTime = Date.now() - 5000;
-    document.getElementById("countdown").innerHTML = "GO";
-  } else {
-    document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
-  }
-  timeleft -= 1;
-}, 1000);
+const connectedPlayersReady = () => {
+    let timeleft = 10;
+    const downloadTimer = setInterval(function(){
+      if(timeleft <= 0){
+        clearInterval(downloadTimer);
+        startTime = Date.now();
+        virus.classList.remove('hide');
+        document.getElementById("countdown").classList.add('hide');
+      } else {
+        document.getElementById("countdown").innerHTML = `Get ready! ${timeleft} seconds until match starts`;
+      }
+      timeleft -= 1;
+    }, 1000);
+    }
 
 const randomVirusPosition = (target) => {
     virus.classList.add('hide')
@@ -92,8 +97,8 @@ const randomVirusPosition = (target) => {
         virus.style.top = target.width + "px";
         virus.style.left = target.height + "px";
         virus.classList.remove('hide')
+        startTime = Date.now();
     }, 1000)
-    startTime = Date.now();
 }
 
 const clickedVirus = (e) => {
@@ -103,7 +108,7 @@ const clickedVirus = (e) => {
         //stop the timer
         endTime = Date.now()
         //reaction time
-        reactionTime = (endTime - startTime - 1000)/1000;
+        reactionTime = (endTime - startTime)/1000;
  
         // set reaction time on webpage
         // score.innerHTML = `<div><h4>${reactionTime} sek</h4></div>`
