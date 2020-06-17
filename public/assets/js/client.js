@@ -6,17 +6,23 @@ const playerNickname = document.querySelector('#playerNickname-form');
 const lobbyRoom = document.querySelector('#waitForConnect');
 const playingField = document.querySelector('#playingField');
 const gameBoard = document.querySelector('#gameBoard');
+const gameBoardInfo = document.querySelector('#players')
 const virus = document.getElementById('virus');
 const timer = document.querySelector('#countdown')
+const restartButton = document.querySelector('#restartButton')
+const gameOverDiv = document.querySelector('#gameOver')
+const gameOverText = document.querySelector('#gameOverText')
 
 // GENERAL VARIABLES
 let nickname = null;
 let playersLob = []
 let playerScoreOne = {
     score: 0,
+    reactions: []
 }
 let playerScoreTwo = {
     score: 0,
+    reactions: []
 }
 let startTime;
 let endTime;
@@ -27,16 +33,52 @@ let score = 1;
 // GENERAL FUNCTIONS
 const gameOver = () => {
     gameBoard.classList.add('hide');
-    document.querySelector("#countdown").classList.add('hide')
-    playingField.innerHTML = `
-    <div>
-        <h2>Game Over</h2>
-        <h3>Result:</h3>
-        <p>${playersLob[0]}: ${playerScoreOne.score}</p>
-        <p>${playersLob[1]}: ${playerScoreTwo.score}</p>
-        <button type="click" class="btn" id="restartButton">Restart Game</button>
-    </div>
-    `
+    gameBoardInfo.classList.add('hide');
+    document.querySelector("#countdown").classList.add('hide');
+
+    let playerThatWon;
+
+    const bestReactionTimeOne = Math.min(...playerScoreOne.reactions)
+    const bestReactionTimeTwo = Math.min(...playerScoreTwo.reactions)
+
+    const winnerTemplate = (playerThatWon) => {
+        gameOverText.innerHTML = `
+            <div id="resultMatch">
+                <h2>The winner is: </h2>
+                    <p>${playerThatWon}</p>
+                    <br>
+                    <br>
+                    <p>${playersLob[0]} points: ${playerScoreOne.score}</p>
+                    <p>Your best reactiontime was: ${bestReactionTimeOne}</p>
+                    <br>
+                    <br>
+                    <p>${playersLob[1]} points: ${playerScoreTwo.score}</p>
+                    <p>Your best reactiontime was: ${bestReactionTimeTwo}</p>
+                    
+            </div>`
+    }
+
+    const drawTemplate = () => {
+        gameOverText.innerHTML = `
+        <div id="resultMatch">
+            <h2>It's a draw</h2>
+                <p>${playersLob[0]} points: ${playerScoreOne.score} and ${playersLob[1]} points: ${playerScoreTwo.score}</p>
+                
+        </div>`
+    }
+
+    if(playerScoreOne.score > playerScoreTwo.score) {
+        playerThatWon = playersLob[0];
+        winnerTemplate(playerThatWon);
+        gameOverDiv.classList.remove('hide');
+    } else if (playerScoreOne.score < playerScoreTwo.score) {
+        playerThatWon = playersLob[1];
+        winnerTemplate(playerThatWon);
+        gameOverDiv.classList.remove('hide');
+    } else {
+       drawTemplate();
+       gameOverDiv.classList.remove('hide');
+    }
 }
 
 const lobby = () => {
@@ -58,7 +100,7 @@ const updatePlayersOnline = (players) => {
 const scoreBoard = (gameData) => {
     if (gameData.nickname === playersLob[0]) {
         playerScoreOne.score ++;
-        console.log("playerScoreOne", playerScoreOne)
+        playerScoreOne.reactions.push(gameData.reaction)
 
         const playerOneInfo = document.querySelector('#playerOneInfo');
         playerOneInfo.innerHTML = 
@@ -68,7 +110,8 @@ const scoreBoard = (gameData) => {
         </div>`
     } else if (gameData.nickname === playersLob[1]){
         playerScoreTwo.score ++;
-        console.log("playerScoreTwo", playerScoreTwo)
+        playerScoreTwo.reactions.push(gameData.reaction)
+
         const playerTwoInfo = document.querySelector('#playerTwoInfo');
         playerTwoInfo.innerHTML = 
         `
@@ -84,7 +127,6 @@ const connectedPlayersReady = () => {
       if(timeleft <= 0){
         clearInterval(tickingTimer);
         startTime = Date.now();
-        randomVirusPosition()
         virus.classList.remove('hide');
         document.getElementById("countdown").classList.add('hide');
       } else {
@@ -92,20 +134,20 @@ const connectedPlayersReady = () => {
       }
       timeleft -= 1;
     }, 1500);
-    }
+}
 
-const randomVirusPosition = (target) => {
+const randomVirusPosition = (target, randomDelay) => {
     virus.classList.add('hide')
     setTimeout(() => {
         virus.style.top = target.width + "px";
         virus.style.left = target.height + "px";
         virus.classList.remove('hide')
         startTime = Date.now();
-    }, 1000)
+    }, randomDelay)
 }
 
 const clickedVirus = (e) => {
-    if(e.target.tagName === 'IMG' ){
+    if(e.target.tagName === 'IMG') {
         //stop the timer
         endTime = Date.now()
         //reaction time
@@ -114,14 +156,15 @@ const clickedVirus = (e) => {
 }
 
 /* Start new round */
-const startRound = (clickVirusPosition) => {
-    randomVirusPosition(clickVirusPosition);
+const startRound = (clickVirusPosition, randomDelay) => {
+    randomVirusPosition(clickVirusPosition, randomDelay);
 }
 
 
 // EVENT FUNCTIONS
 virus.addEventListener('click', e => {
     clickedVirus(e);
+   
     const data = {
         name: nickname,
         reaction: reactionTime,
@@ -142,11 +185,18 @@ playerNickname.addEventListener('submit', e => {
 			startPage.classList.add('hide');
 			lobbyRoom.classList.remove('hide');
 
-			updatePlayersOnline(status.onlinePlayers);
+            updatePlayersOnline(status.onlinePlayers);
+            document.querySelector("#connectedPlayer").innerHTML = `
+            <h2>Connected Player:</h2>
+            <p>${nickname}</p>`
 		}
 	});
 
 });
+
+restartButton.addEventListener('click', e => {
+    console.log("Clicked")
+})
 
 
 // SOCKET FUNCTIONS
@@ -158,20 +208,23 @@ socket.on('reconnect', () => {
 });
 
 socket.on('players-online', (players) => {
-	updatePlayersOnline(players);
+    updatePlayersOnline(players);
+    document.querySelector("#playerOneName").innerText = players[0];
+    document.querySelector("#playerTwoName").innerText = players[1];
 });
 
 
 // socket.on('player-click', (target, gameData) => {
 // });
 
-socket.on('new-round', (clickVirusPosition, gameData) => {
+socket.on('new-round', (clickVirusPosition, gameData, randomDelay) => {
     scoreBoard(gameData)
-    startRound(clickVirusPosition)
+    startRound(clickVirusPosition, randomDelay)
 });
 
-socket.on('game-over', () => {
-    gameOver()
+socket.on('game-over', (gameData) => {
+    scoreBoard(gameData);
+    gameOver(gameData);
 })
 
 socket.on('create-game-page', lobby);

@@ -26,7 +26,10 @@
 
     <div id="waitForConnect" class="hide">
 		<img src="./assets/images/loading.gif" alt="load" class="load">
-        <p>Waiting for a player to start the game</p>
+		<p>Waiting for another player to connect...</p>
+			<div id="connectedPlayer">
+				
+			</div>
     </div>
 
 		<div id="playingField" class="hide">
@@ -37,6 +40,10 @@
 					</div>
 					<img id="virus" src="./assets/images/virus-2.png" alt="Virus" class="hide">
 				</div>						
+			</div>
+			<div id="gameOver" class="hide">
+				<div id="gameOverText"></div>
+				<button type="click" class="btn" id="restartButton">Restart Game</button>
 			</div>
 
 			<div id="players">

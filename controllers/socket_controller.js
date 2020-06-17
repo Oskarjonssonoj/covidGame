@@ -8,7 +8,7 @@ let io = null;
 const users = {};
 
 let roundsPlayed = 0
-let maxRounds = 3
+let maxRounds = 6
 let players = []
 let score = {}
 let reaction = {}
@@ -21,31 +21,11 @@ function getPlayersOnline() {
 	return Object.values(users);
 }
 
-// //Start a new game
-// function startRound(socket) {
-    
-//     // check which user that starts the game:
-//     console.log(`Player: ${users[socket.id]} started the game`);
-        
-//     if (gameInfo.roundsPlayed < 10) {
-//         socket.emit('get-available-space', socket.id);
-//         console.log('Played rounds: ', gameInfo.roundsPlayed)
-//     } else {
-//         io.emit('game-over', gameInfo.players, gameInfo.score);
-//         gameInfo.roundsPlayed = 0;
-    
-//         console.log("game over");
-//         return;
-//     }
-
-// };
-
 function randomPosition (range) {
 	return Math.floor(Math.random() * range)
 };
 
 function handlePlayerClick(data) {
-	
 	
 	roundsPlayed ++;
 	console.log("games played", roundsPlayed);
@@ -55,6 +35,8 @@ function handlePlayerClick(data) {
 		score: data.score,
 		reaction: data.reaction,
 	}
+
+	const randomDelay = Math.floor(Math.random() * 10000);
 	
 	const clickVirusPosition = {
 		width: randomPosition(500),
@@ -62,9 +44,9 @@ function handlePlayerClick(data) {
 	}
 	// Emit new image
 	if (roundsPlayed < maxRounds) {		
-		io.emit('new-round', clickVirusPosition, gameData);
+		io.emit('new-round', clickVirusPosition, gameData, randomDelay);
 	} else if (roundsPlayed === maxRounds){
-		io.emit('game-over')
+		io.emit('game-over', gameData)
 		roundsPlayed = 0;
 	}
 }
