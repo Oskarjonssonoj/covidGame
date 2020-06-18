@@ -8,7 +8,7 @@ let io = null;
 const users = {};
 
 let roundsPlayed = 0
-let maxRounds = 2
+let maxRounds = 10
 
 
 // Get nicknames of online users 
