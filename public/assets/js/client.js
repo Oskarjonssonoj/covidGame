@@ -212,6 +212,7 @@ const clickedVirus = (e) => {
 
 /* Start new round */
 const startRound = (clickVirusPosition, randomDelay) => {
+    bleep.play()
     randomVirusPosition(clickVirusPosition, randomDelay);
 }
 
