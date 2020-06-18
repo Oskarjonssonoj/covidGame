@@ -8,7 +8,7 @@ let io = null;
 const users = {};
 
 let roundsPlayed = 0
-let maxRounds = 10
+let maxRounds = 2
 
 
 // Get nicknames of online users 
@@ -34,8 +34,8 @@ function handlePlayerClick(data) {
 	const randomDelay = Math.floor(Math.random() * 10000);
 	
 	const clickVirusPosition = {
-		width: randomPosition(500),
-		height: randomPosition(700)
+		width: randomPosition(630),
+		height: randomPosition(880)
 	}
 	// Emit new image
 	if (roundsPlayed < maxRounds) {		

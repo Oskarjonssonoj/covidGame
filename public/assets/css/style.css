@@ -105,6 +105,8 @@ body {
 
 #getReady {
 	font-size: 8rem;
+	color: #B7B296;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 #countdown {
@@ -112,24 +114,26 @@ body {
 	display: flex;
 	align-items: center;
 	margin: 0 auto;
+	color: #B7B296;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 #gameBoard {
-	margin-left: 3rem;
-	margin-right: 3rem;
-	margin-top: 3rem;
-	width: 75%;
+	background-image: 
+	linear-gradient( rgba(10, 10, 10, 0.637), rgba(19, 18, 18, 0.637)), url('../images/covid.gif');
+	background-position: center;
+	width: 80%;
 }
 
 #play {
-	background-color: #E3E6CF;
+	/* background-color: #E3E6CF; */
 	border-radius: 0.7rem;
-	height: 510px;
-	width: 720px;
+	height: 650px;
+    width: 900px;
 	position: relative;
 	margin: auto;
 	display: flex;
-	margin-top: 3rem;
+	margin-top: 2rem;
 }
 
 #virus {
@@ -147,7 +151,7 @@ body {
 }
 
 #players {
-	flex-basis: 25%;
+	flex-basis: 20%;
 	border: 1px solid black;
 	color: #B7B296;
 	text-align: center;
@@ -178,7 +182,7 @@ body {
 
 #players li:first-child {
 	border-right: #B7B296 solid 3px;
-	padding-right: 58px;
+	padding-right: 45px;
 }
 
 .playerInfo p {
