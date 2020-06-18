@@ -1,4 +1,6 @@
+// CLIENT JAVASCRIPT
 const socket = io();
+
 
 // QUERY SELECTOR VARIABLES
 const startPage = document.querySelector('#startPage');
@@ -12,6 +14,7 @@ const timer = document.querySelector('#countdown')
 const restartButton = document.querySelector('#restartButton')
 const gameOverDiv = document.querySelector('#gameOver')
 const gameOverText = document.querySelector('#gameOverText')
+
 
 // GENERAL VARIABLES
 let nickname = null;
@@ -28,6 +31,9 @@ let startTime;
 let endTime;
 let reactionTime;
 let score = 1;
+
+
+// SOUND EFFECTS
 let bleep = new Audio("./assets/sounds/killTwo.mp3");
 let tick = new Audio("./assets/sounds/countbeep.mp3");
 let start = new Audio("./assets/sounds/startbeep.mp3")
@@ -210,7 +216,6 @@ const clickedVirus = (e) => {
     }
 }
 
-/* Start new round */
 const startRound = (clickVirusPosition, randomDelay) => {
     bleep.play()
     randomVirusPosition(clickVirusPosition, randomDelay);
@@ -229,7 +234,6 @@ virus.addEventListener('click', e => {
 
 	socket.emit('player-click', data)
 })
-
 
 playerNickname.addEventListener('submit', e => {
 	e.preventDefault();

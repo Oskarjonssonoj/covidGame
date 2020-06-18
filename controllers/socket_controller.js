@@ -1,25 +1,27 @@
-/**
- * Socket Controller
- */
+
+// SOCKET CONTROLLER
+
 
 const debug = require('debug')('covidGame:socket_controller');
 
+// General variables
 let io = null;
-const users = {};
-
 let roundsPlayed = 0
 let maxRounds = 10
+const users = {};
 
 
-// Get nicknames of online users 
+// Get nicknames of online players 
 function getPlayersOnline() {
 	return Object.values(users);
 }
 
+// Get random coordinates
 function randomPosition (range) {
 	return Math.floor(Math.random() * range)
 };
 
+// Handle the click by the players
 function handlePlayerClick(data) {
 	
 	roundsPlayed ++;
@@ -46,6 +48,7 @@ function handlePlayerClick(data) {
 	}
 }
 
+// Check if two plauers are connected
 function checkPlayersOnline(socket) {
     if (Object.keys(users).length === 2) {
 
@@ -56,9 +59,7 @@ function checkPlayersOnline(socket) {
     }
 }
 
-/**
- * Handle player disconnecting
- */
+// Handle player disconnecting 
 function handlePlayerDisconnect() {
 	// broadcast to all connected sockets that this user has left the chat
 	if (users[this.id]) {
@@ -69,9 +70,8 @@ function handlePlayerDisconnect() {
 	delete users[this.id];
 }
 
-/**
- * Handle a new player connecting
- */
+
+// Handle a new player connecting
 function handlePlayerRegistration(nickname, callback) {
 	debug("Player: '%s' connected to the lobby", nickname);
 	users[this.id] = nickname;
@@ -92,11 +92,8 @@ function handlePlayerRegistration(nickname, callback) {
 
 
 module.exports = function(socket) {
-	// this = io
 	io = this;
-	debug(`Client ${socket.id} connected!`);
 
-	
 	socket.on('disconnect', handlePlayerDisconnect);
 	socket.on('player-click', handlePlayerClick);
 	socket.on('register-player', handlePlayerRegistration);
