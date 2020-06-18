@@ -7,7 +7,7 @@
 require('dotenv').config();
 
 const app = require('../app');
-const debug = require('debug')('09-simple-chat:server');
+const debug = require('debug')('covidgameoj:server');
 const http = require('http');
 const SocketIO = require('socket.io');
 

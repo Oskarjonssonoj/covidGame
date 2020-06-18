@@ -1,11 +1,11 @@
 {
-  "name": "09-simple-chat",
+  "name": "covidgameoj",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/server.js",
-    "dev": "cross-env DEBUG=09-simple-chat:* nodemon ./bin/server.js",
-    "debug": "cross-env DEBUG=09-simple-chat:* nodemon --inspect ./bin/server.js"
+    "dev": "cross-env DEBUG=covidgameoj:* nodemon ./bin/server.js",
+    "debug": "cross-env DEBUG=covidgameoj:* nodemon --inspect ./bin/server.js"
   },
   "dependencies": {
     "cross-env": "^7.0.2",
