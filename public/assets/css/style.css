@@ -1,12 +1,8 @@
+/* General styles */
 @import url('https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap');
 
 body {
 	font-family: 'Odibee Sans', cursive;
-}
-
-.load {
-	width: 200px;
-	height: 200px;
 }
 
 .hide {
@@ -17,20 +13,39 @@ body {
 	background-color: #1a1a19;
 }
 
+
+/* Registration page */
 #startPage {
 	display: flex;
 	height: 100vh;
+	background-image: 
+	linear-gradient( rgba(10, 10, 10, 0.637), rgba(19, 18, 18, 0.637)), url('../images/covid.gif');
+	background-position: center;
 	align-items: center;
 	flex-direction: column;
 	justify-content: center;
 }
 
-#startPage h1{
-	color: #B7B296;
+#startPage h1 {
+	color: #B7B296;;
 }
 
-#startPage button{
+#startPage p {
+	color: white;
+	font-size: 1.2rem;
+	margin-bottom: 0;
+}
+
+
+#startPage button {
 	background-color: #B7B296;
+	width: 10rem;
+    height: 2.5rem;
+    margin-top: 0.5rem;
+}
+
+#startPage button:hover {
+	background-color: rgb(133, 129, 108);
 }
 
 #playerNickname-form {
@@ -38,16 +53,66 @@ body {
 	text-align: center;
 }
 
+.form-control-lg {
+	width: 15rem;
+}
+
+#startPage button:hover {
+	background-color: rgb(133, 129, 108);
+}
+
+
+/* Waiting for connection-page */
+#connectedPlayer {
+	margin-top: 2rem;
+	color: #B7B296;
+    text-align: center;
+}
+
+#waitForConnect {
+	display:flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	height: 100vh;
+}
+
+#waitForConnect p {
+	color: #B7B296;
+	font-size: 1.5rem;
+}
+
+.connectedNickname {
+	color: white !important;
+}
+
+.load {
+	width: 200px;
+	height: 200px;
+}
+
+
+/* Playing page */
 #playingField {
 	height: 100vh;
 	display: flex;
 	justify-content: space-between;
 }
 
-#playingField button{
+#playingField button {
 	background-color: #B7B296;
 }
 
+#getReady {
+	font-size: 8rem;
+}
+
+#countdown {
+	font-size: 6rem;
+	display: flex;
+	align-items: center;
+	margin: 0 auto;
+}
 
 #gameBoard {
 	margin-left: 3rem;
@@ -59,16 +124,17 @@ body {
 #play {
 	background-color: #E3E6CF;
 	border-radius: 0.7rem;
-	height: 550px;
-	width: 780px;
+	height: 510px;
+	width: 720px;
 	position: relative;
 	margin: auto;
 	display: flex;
+	margin-top: 3rem;
 }
 
 #virus {
-	width: 40px;
-	height: 40px;
+	width: 28px;
+	height: 28px;
 	cursor: pointer;
 	position: absolute;
 	top: 200px;
@@ -103,6 +169,7 @@ body {
 }
 
 #players li {
+	color: white;
 	font-size: 1.5rem;
 	margin-top: 1.5rem;
 	padding-top: 2rem;
@@ -110,7 +177,7 @@ body {
 }
 
 #players li:first-child {
-	border-right: #B7B296 solid 4px;
+	border-right: #B7B296 solid 3px;
 	padding-right: 58px;
 }
 
@@ -120,48 +187,66 @@ body {
 }
 
 #playerOne {
-	padding-bottom: 2rem;
+	padding-bottom: 4rem;
 }
 
-
-#waitForConnect {
-	display:flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-	height: 100vh;
-}
-
-
-
-#waitForConnect p {
-	color: #B7B296;
-	font-size: 1.5rem;
-}
-
-#getReady {
-	font-size: 8rem;
-}
-
-#countdown {
-	font-size: 6rem;
-	display: flex;
-	align-items: center;
-	margin: 0 auto;
-}
-
-#resultMatch {
+#playerOneInfo span {
 	color: white;
 }
 
-#message-wrapper {
-	flex-grow: 1;
+#playerTwoInfo span {
+	color: white;
 }
 
-#messages li .user {
-	font-weight: bold;
+
+/* Result and winner page */
+#resultMatch {
+	color: #B7B296;
+	width: 30rem;
+    margin: 0 auto;
 }
 
-#messages .notice {
-	font-style: italic;
+#resultMatch p {
+	font-size: 1.3rem;
+}
+
+.resultMatchInfo {
+    margin: 4rem 0;
+}
+
+#resultMatch #winnerName {
+    color: white;
+}
+
+.resultMatchInfo span {
+    color: white;
+}
+
+#sumMatch {
+    display: flex;
+    justify-content: space-between;
+}
+
+#allReactionsOne {
+	list-style: none;
+	padding-left: 0;
+	color: white;
+}
+
+.yourReactions {
+	margin-bottom: 0;
+}
+
+#allReactionsTwo {
+	list-style: none;
+	padding-left: 0;
+	color: white;
+}
+
+#gameOver {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 100%;
+    text-align: center;
 }

@@ -4,7 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Kill the Virus</title>
-
+	<link rel='icon' href='favicon.png' type='image/x-icon'/ >
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
@@ -14,8 +18,9 @@
 
 <body>
 	<div id="app">
-		<div id="startPage" class="container">
-			<h1>Kill the Virus - Covid Edition</h1>
+		<div id="startPage">
+			<h1>Kill the Virus - Covid 19 Edition</h1>
+			<p id="gameType">2-player</p>
 			<form id="playerNickname-form">
 				<div class="form-group">
 					<input type="text" id="nickname" class="form-control form-control-lg" required placeholder="Nickname..">
@@ -26,7 +31,9 @@
 
     <div id="waitForConnect" class="hide">
 		<img src="./assets/images/loading.gif" alt="load" class="load">
-		<p>Waiting for another player to connect...</p>
+		<p id="waitingMsg">Waiting for another player to connect...</p>
+		<p id="connectedMsg" class="hide">All players are connected</p>
+		<p id="startingMsg" class="hide">Starting game...</p>
 			<div id="connectedPlayer">
 				
 			</div>
@@ -38,12 +45,14 @@
 					<div id="countdown">
 						<p id="getReady">Get Ready</p>
 					</div>
-					<img id="virus" src="./assets/images/virus-2.png" alt="Virus" class="hide">
+					<a href="#" onmousedown="bleep.play()">
+						<img id="virus" src="./assets/images/virus-2.png" alt="Virus" class="hide">
+					</a>
 				</div>						
 			</div>
 			<div id="gameOver" class="hide">
 				<div id="gameOverText"></div>
-				<button type="click" class="btn" id="restartButton">Restart Game</button>
+				<a href="http://localhost:3000/" class="restartButton"><button type="click" class="btn" id="restartButton">Restart Game</button></a>
 			</div>
 
 			<div id="players">
@@ -53,15 +62,15 @@
 					<div id="playerOne">
 						<h3 id="playerOneName"></h3>
 						<div id="playerOneInfo">
-							<p>Score: 0</p>
-							<p>Reactiontime:</p>
+							<p>Score: <span>0</span></p>
+							<p>Reaction time:</p>
 						</div>
 					</div>
 					<div id="playerTwo">
 						<h3 id="playerTwoName"></h3>
 						<div id="playerTwoInfo">
-							<p>Score: 0</p>
-							<p>Reactiontime:</p>
+							<p>Score: <span>0</span></p>
+							<p>Reaction time:</p>
 						</div>
 					</div>
 				</div>
@@ -70,6 +79,10 @@
 	</div>
 
 	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		let bleep = new Audio();
+		bleep.src = "./assets/sounds/blip.mp3"
+	</script>
 	<script src="/assets/js/client.js"></script>
 </body>
 </html>

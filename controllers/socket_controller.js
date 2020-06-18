@@ -8,15 +8,10 @@ let io = null;
 const users = {};
 
 let roundsPlayed = 0
-let maxRounds = 6
-let players = []
-let score = {}
-let reaction = {}
+let maxRounds = 10
 
 
-
-// Get nicknames of online users
- 
+// Get nicknames of online users 
 function getPlayersOnline() {
 	return Object.values(users);
 }
@@ -55,8 +50,6 @@ function checkPlayersOnline(socket) {
     if (Object.keys(users).length === 2) {
 
         io.emit('create-game-page');
-     
-        console.log('players of the game: ', players);
 
     } else {
         return;
@@ -67,8 +60,6 @@ function checkPlayersOnline(socket) {
  * Handle player disconnecting
  */
 function handlePlayerDisconnect() {
-	debug(`Socket ${this.id} left the chat :(`);
-
 	// broadcast to all connected sockets that this user has left the chat
 	if (users[this.id]) {
 		this.broadcast.emit('user-disconnected', users[this.id]);

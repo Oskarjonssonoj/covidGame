@@ -41,59 +41,107 @@ const gameOver = () => {
     const bestReactionTimeOne = Math.min(...playerScoreOne.reactions)
     const bestReactionTimeTwo = Math.min(...playerScoreTwo.reactions)
 
+    const allReactionsOne = () => {
+        document.querySelector('#allReactionsOne').innerHTML = playerScoreOne.reactions.map(reaction => `<li class="reaction">${reaction} seconds</li>`).join("");
+    }
+
+    const allReactionsTwo = () => {
+        document.querySelector('#allReactionsTwo').innerHTML = playerScoreTwo.reactions.map(reaction => `<li class="reaction">${reaction} seconds</li>`).join("");
+    }
+
     const winnerTemplate = (playerThatWon) => {
         gameOverText.innerHTML = `
             <div id="resultMatch">
-                <h2>The winner is: </h2>
-                    <p>${playerThatWon}</p>
-                    <br>
-                    <br>
-                    <p>${playersLob[0]} points: ${playerScoreOne.score}</p>
-                    <p>Your best reactiontime was: ${bestReactionTimeOne}</p>
-                    <br>
-                    <br>
-                    <p>${playersLob[1]} points: ${playerScoreTwo.score}</p>
-                    <p>Your best reactiontime was: ${bestReactionTimeTwo}</p>
-                    
+                <h1>The winner is: </h1>
+                <h2 id="winnerName">${playerThatWon}</h2>
+                    <div id="sumMatch">
+                        <div class="resultMatchInfo">
+                            <h2>${playersLob[0]}</h2>
+                            <p>Score: <span>${playerScoreOne.score}</span></p>
+                            <p>Best reaction time was: <span>${bestReactionTimeOne}</span></p>
+                            <p class="yourReactions">Your reactions:</p>
+                            <ul id="allReactionsOne">
+                            </ul>
+                        </div>
+                        <div class="resultMatchInfo">
+                            <h2>${playersLob[1]}</h2>
+                            <p>Score: <span>${playerScoreTwo.score}</span></p>
+                            <p>Best reaction time was: <span>${bestReactionTimeTwo}</span></p>
+                            <p class="yourReactions">Your reactions:</p>
+                            <ul id="allReactionsTwo">
+                            </ul>
+                        </div>
+                    </div>
             </div>`
     }
 
     const drawTemplate = () => {
         gameOverText.innerHTML = `
         <div id="resultMatch">
-            <h2>It's a draw</h2>
-                <p>${playersLob[0]} points: ${playerScoreOne.score} and ${playersLob[1]} points: ${playerScoreTwo.score}</p>
-                
+            <h1>It's a draw</h1>
+                <div id="sumMatch">
+                    <div class="resultMatchInfo">
+                        <h2>${playersLob[0]}</h2>
+                        <p>Score: <span>${playerScoreOne.score}</span></p>
+                        <p>Best reaction time was: <span>${bestReactionTimeOne}</span></p>
+                        <p class="yourReactions">Your reactions:</p>
+                        <ul id="allReactionsOne">
+                        </ul>
+                    </div>
+                    <div class="resultMatchInfo">
+                        <h2>${playersLob[1]}</h2>
+                        <p>Score: <span>${playerScoreTwo.score}</span></p>
+                        <p>Best reaction time was: <span>${bestReactionTimeTwo}</span></p>
+                        <p class="yourReactions">Your reactions:</p>
+                        <ul id="allReactionsTwo">
+                        </ul>
+                    </div>
+                </div>
         </div>`
     }
 
     if(playerScoreOne.score > playerScoreTwo.score) {
         playerThatWon = playersLob[0];
         winnerTemplate(playerThatWon);
+        allReactionsOne();
+        allReactionsTwo();
         gameOverDiv.classList.remove('hide');
     } else if (playerScoreOne.score < playerScoreTwo.score) {
         playerThatWon = playersLob[1];
         winnerTemplate(playerThatWon);
+        allReactionsOne();
+        allReactionsTwo();
         gameOverDiv.classList.remove('hide');
     } else {
        drawTemplate();
+       allReactionsOne();
+       allReactionsTwo();
        gameOverDiv.classList.remove('hide');
     }
 }
 
 const lobby = () => {
-    lobbyRoom.classList.add('hide');
-    playingField.classList.remove('hide');
-    document.querySelector("#playerOneName").innerText = playersLob[0];
-    document.querySelector("#playerTwoName").innerText = playersLob[1];
 
-    connectedPlayersReady();
+    document.querySelector("#waitingMsg").classList.add("hide");
+    document.querySelector("#connectedMsg").classList.remove("hide");
+    
+    setTimeout(() => {
+        document.querySelector("#connectedMsg").classList.add("hide");
+        document.querySelector("#startingMsg").classList.remove("hide");
+    }, 3500)
+
+    setTimeout(() => {
+        lobbyRoom.classList.add('hide');
+        playingField.classList.remove('hide');
+        document.querySelector("#playerOneName").innerText = playersLob[0];
+        document.querySelector("#playerTwoName").innerText = playersLob[1];
+    
+        connectedPlayersReady();
+    }, 6000)
 }
 
 const updatePlayersOnline = (players) => {
-    console.log(players)
     playersLob = players;
-    console.log('playersLob', playersLob)
 	document.querySelector('#players-online').innerHTML = players.map(player => `<li class="player"><span class="fas fa-user"></span>${player}</li>`).join("");
 }
 
@@ -104,10 +152,10 @@ const scoreBoard = (gameData) => {
 
         const playerOneInfo = document.querySelector('#playerOneInfo');
         playerOneInfo.innerHTML = 
-        `<div>
-            <p>Score: ${gameData.score}</p>
-            <p>Reactiontime: ${gameData.reaction}</p>
-        </div>`
+        `
+            <p>Score: <span>${gameData.score}</span></p>
+            <p>Reaction time: <span>${gameData.reaction}</span></p>
+        `
     } else if (gameData.nickname === playersLob[1]){
         playerScoreTwo.score ++;
         playerScoreTwo.reactions.push(gameData.reaction)
@@ -115,8 +163,8 @@ const scoreBoard = (gameData) => {
         const playerTwoInfo = document.querySelector('#playerTwoInfo');
         playerTwoInfo.innerHTML = 
         `
-            <p>Score: ${gameData.score}</p>
-            <p>Reactiontime: ${gameData.reaction}</p>
+            <p>Score: <span>${gameData.score}</span></p>
+            <p>Reaction time: <span>${gameData.reaction}</span></p>
         `
     }
 }
@@ -187,17 +235,12 @@ playerNickname.addEventListener('submit', e => {
 
             updatePlayersOnline(status.onlinePlayers);
             document.querySelector("#connectedPlayer").innerHTML = `
-            <h2>Connected Player:</h2>
-            <p>${nickname}</p>`
+            <h4>Connected as:</h4>
+            <p class="connectedNickname">${nickname}</p>`
 		}
 	});
 
 });
-
-restartButton.addEventListener('click', e => {
-    console.log("Clicked")
-})
-
 
 // SOCKET FUNCTIONS
 socket.on('reconnect', () => {
@@ -213,9 +256,6 @@ socket.on('players-online', (players) => {
     document.querySelector("#playerTwoName").innerText = players[1];
 });
 
-
-// socket.on('player-click', (target, gameData) => {
-// });
 
 socket.on('new-round', (clickVirusPosition, gameData, randomDelay) => {
     scoreBoard(gameData)
