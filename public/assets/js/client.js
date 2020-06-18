@@ -28,6 +28,8 @@ let startTime;
 let endTime;
 let reactionTime;
 let score = 1;
+let bleep = new Audio();
+bleep.src = "./assets/sounds/pop.mp3"
 
 
 // GENERAL FUNCTIONS
