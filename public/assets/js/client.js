@@ -28,8 +28,10 @@ let startTime;
 let endTime;
 let reactionTime;
 let score = 1;
-let bleep = new Audio();
-bleep.src = "./assets/sounds/pop.mp3"
+let bleep = new Audio("./assets/sounds/killTwo.mp3");
+let tick = new Audio("./assets/sounds/countbeep.mp3");
+let start = new Audio("./assets/sounds/startbeep.mp3")
+let getReady = new Audio("./assets/sounds/getready.mp3")
 
 
 // GENERAL FUNCTIONS
@@ -172,6 +174,7 @@ const scoreBoard = (gameData) => {
 }
 
 const connectedPlayersReady = () => {
+    getReady.play();
     let timeleft = 3;
     const tickingTimer = setInterval(function(){
       if(timeleft <= 0){
@@ -179,8 +182,10 @@ const connectedPlayersReady = () => {
         startTime = Date.now();
         virus.classList.remove('hide');
         document.getElementById("countdown").classList.add('hide');
+        start.play()
       } else {
         document.getElementById("countdown").innerHTML = ` ${timeleft}`;
+        tick.play();
       }
       timeleft -= 1;
     }, 1500);
